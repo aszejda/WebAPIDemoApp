@@ -63,10 +63,20 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Products.sql" />
-    <Build Include="dbo\StoredProcedures\spProduct_InsertOrUpdateData.sql" />
+    <Build Include="dbo\StoredProcedures\spProduct_InsertOrUpdate.sql" />
     <Build Include="dbo\Types\ProductModelType.sql" />
+    <Build Include="dbo\StoredProcedures\spProduct_Get.sql" />
+    <Build Include="dbo\StoredProcedures\spProduct_GetInfoBySku.sql" />
+    <Build Include="dbo\StoredProcedures\spProduct_GetWith24hShippment.sql" />
+    <Build Include="dbo\Tables\Inventory.sql" />
+    <Build Include="dbo\Tables\Prices.sql" />
+    <Build Include="dbo\StoredProcedures\spInventory_InsertOrUpdate.sql" />
+    <Build Include="dbo\Types\InventoryModelType.sql" />
   </ItemGroup>
   <ItemGroup>
-    <RefactorLog Include="StockDB.refactorlog" />
+    <None Include="StockDB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>

@@ -4,22 +4,17 @@ using CsvHelper;
 
 namespace DataAccess.Data;
 
-public class BoolTypeConverter : DefaultTypeConverter
+public class DecimalTypeConverter : DecimalConverter
 {
     public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
     {
-        if (string.IsNullOrWhiteSpace(text))
-        {
-            return false;
-        }
 
-        if (int.TryParse(text, out int intValue))
+        if (string.IsNullOrWhiteSpace(text) || text == "O")
         {
-            return intValue != 0;
+            return 0m;
         }
+        else text = text.Replace(",", ".");
 
         return base.ConvertFromString(text, row, memberMapData);
     }
 }
-
-

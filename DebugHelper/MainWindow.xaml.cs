@@ -28,7 +28,10 @@ namespace DebugHelper
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            await CsvData.LoadDataFromCsv("https://rekturacjazadanie.blob.core.windows.net/zadanie/Products.csv");
+           //var products = await CsvData.LoadProducts();
+           //var inventory = await CsvData.LoadInventory();
+           var prices = await CsvData.LoadPrices();
+            
         }
     }
 }

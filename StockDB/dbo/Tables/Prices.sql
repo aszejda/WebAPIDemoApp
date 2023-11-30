@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[Prices]
+(
+	[Id] INT NOT NULL PRIMARY KEY,
+	[SKU] NVARCHAR(50) NOT NULL REFERENCES Products(SKU),
+	[NetWithDiscountPerSet] DECIMAL(10,2) NOT NULL
+);
