@@ -21,12 +21,6 @@ public class SqlDataAccess : ISqlDataAccess
         return await connection.QueryAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task SaveData<T>(string storedProcedure, T parameters, string connectionId = "Default")
-    {
-        using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
-        await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
-    }
-
     public async Task SaveProductsBulk(string storedProcedure, IEnumerable<ProductModel> parameters, string connectionId = "Default")
     {
         using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
@@ -76,22 +70,5 @@ public class SqlDataAccess : ISqlDataAccess
             dataTable.Rows.Add(null, parameter.SKU, parameter.NetWithDiscountPerSet);
 
         await connection.ExecuteAsync(storedProcedure, new { @PriceData = dataTable.AsTableValuedParameter("dbo.PriceModelType") }, commandType: CommandType.StoredProcedure);
-    }
-
-    public async Task SaveBulk<T>(string storedProcedure, IEnumerable<T> parameters, string tableTypeName, string connectionId = "Default")
-    {
-        using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
-        var dataTable = new DataTable();
-
-        foreach (var property in typeof(T).GetProperties())
-            dataTable.Columns.Add(property.Name, property.PropertyType);
-
-        foreach (var parameter in parameters)
-        {
-            var values = typeof(T).GetProperties().Select(prop => prop.GetValue(parameter)).ToArray();
-            dataTable.Rows.Add(values);
-        }
-
-        await connection.ExecuteAsync(storedProcedure, new { @Data = dataTable.AsTableValuedParameter(tableTypeName) }, commandType: CommandType.StoredProcedure);
     }
 }

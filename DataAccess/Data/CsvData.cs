@@ -33,7 +33,7 @@ public class CsvData
             csv.Context.TypeConverterCache.AddConverter<int>(new Int32TypeConverter());
 
             products = csv.GetRecords<ProductModel>()
-                .Where(p => p.is_wire == false && (/*p.shipping == "24h" || */p.shipping == "Wysyłka w 24h"))
+                .Where(p => p.is_wire == false && (p.shipping == "24h" || p.shipping == "Wysyłka w 24h"))
                 .ToList();
         }
         if (products is not null)
@@ -100,7 +100,6 @@ public class CsvData
 
             var records = csv.GetRecords<PriceModel>().ToList();
 
-
             Parallel.ForEach(records, price =>
             {
                 if (_productSKUsWith24HShipping.Contains(price.SKU))
@@ -116,6 +115,7 @@ public class CsvData
 
         return prices;
     }
+
 
     public static async Task DownloadFileIfNotExists(string url, string localFilePath)
     {

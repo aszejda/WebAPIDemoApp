@@ -18,9 +18,7 @@ public class ProductInfoData : IProductInfoData
         List<InventoryModel> inventory = await CsvData.LoadInventory();
         List<PriceModel> prices = await CsvData.LoadPrices();
 
-        await _db.SaveBulk(storedProcedure: "dbo.spProduct_InsertOrUpdate", products, "dbo.ProductModelType");
-
-        //await _db.SaveProductsBulk(storedProcedure: "dbo.spProduct_InsertOrUpdate", products);
+        await _db.SaveProductsBulk(storedProcedure: "dbo.spProduct_InsertOrUpdate", products);
         await _db.SaveInventoryBulk(storedProcedure: "dbo.spInventory_InsertOrUpdate", inventory);
         await _db.SavePricesBulk(storedProcedure: "dbo.spPrice_InsertOrUpdate", prices);
     }
