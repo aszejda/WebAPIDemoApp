@@ -16,8 +16,13 @@ public class ProductInfoData : IProductInfoData
     {
         List<ProductModel> products = await CsvData.LoadProducts();
         List<InventoryModel> inventory = await CsvData.LoadInventory();
-        await _db.SaveDataBulk(storedProcedure: "dbo.spProduct_InsertOrUpdate", products);
+        List<PriceModel> prices = await CsvData.LoadPrices();
+
+        await _db.SaveBulk(storedProcedure: "dbo.spProduct_InsertOrUpdate", products, "dbo.ProductModelType");
+
+        //await _db.SaveProductsBulk(storedProcedure: "dbo.spProduct_InsertOrUpdate", products);
         await _db.SaveInventoryBulk(storedProcedure: "dbo.spInventory_InsertOrUpdate", inventory);
+        await _db.SavePricesBulk(storedProcedure: "dbo.spPrice_InsertOrUpdate", prices);
     }
 
     public async Task<ProductInfoModel> GetProductInfoBySku(string sku)
@@ -26,5 +31,4 @@ public class ProductInfoData : IProductInfoData
         if (results is null || results.Count() == 0) return new();
         return results.FirstOrDefault()!;
     }
-
 }

@@ -33,7 +33,7 @@ public class CsvData
             csv.Context.TypeConverterCache.AddConverter<int>(new Int32TypeConverter());
 
             products = csv.GetRecords<ProductModel>()
-                .Where(p => p.is_wire == false && (/*p.shipping == "24h" ||*/ p.shipping == "Wysyłka w 24h"))
+                .Where(p => p.is_wire == false && (/*p.shipping == "24h" || */p.shipping == "Wysyłka w 24h"))
                 .ToList();
         }
         if (products is not null)
@@ -96,14 +96,26 @@ public class CsvData
         using (var csv = new CsvReader(reader, csvConfig))
         {
             csv.Context.TypeConverterCache.AddConverter<decimal>(new DecimalTypeConverter());
-            prices = csv.GetRecords<PriceModel>()
-                .Where(p => _productSKUsWith24HShipping.Contains(p.SKU))
-                .ToList();
+            csv.Context.RegisterClassMap<PriceModelMap>();
+
+            var records = csv.GetRecords<PriceModel>().ToList();
+
+
+            Parallel.ForEach(records, price =>
+            {
+                if (_productSKUsWith24HShipping.Contains(price.SKU))
+                {
+                    lock (prices)
+                    {
+                        prices.Add(price);
+                        File.AppendAllText(Directory.GetCurrentDirectory() + @"\Log.txt", price.SKU + Environment.NewLine);
+                    }
+                }
+            });
         }
 
         return prices;
     }
-
 
     public static async Task DownloadFileIfNotExists(string url, string localFilePath)
     {
@@ -117,5 +129,14 @@ public class CsvData
                 await stream.CopyToAsync(fileStream);
             }
         }
+    }
+}
+
+public sealed class PriceModelMap : ClassMap<PriceModel>
+{
+    public PriceModelMap()
+    {
+        Map(m => m.SKU).Index(1); 
+        Map(m => m.NetWithDiscountPerSet).Index(5);
     }
 }

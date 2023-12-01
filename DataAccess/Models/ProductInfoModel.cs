@@ -1,8 +1,7 @@
 ﻿namespace DataAccess.Models;
 
 public class ProductInfoModel
-{
-    
+{    
     public string name { get; set; } = string.Empty;
     public string EAN { get; set; } = string.Empty;
     public string producer_name { get; set; } = string.Empty;

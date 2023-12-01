@@ -72,6 +72,8 @@
     <Build Include="dbo\Tables\Prices.sql" />
     <Build Include="dbo\StoredProcedures\spInventory_InsertOrUpdate.sql" />
     <Build Include="dbo\Types\InventoryModelType.sql" />
+    <Build Include="dbo\Types\PriceModelType.sql" />
+    <Build Include="dbo\StoredProcedures\spPrice_InsertOrUpdate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="StockDB.publish.xml" />

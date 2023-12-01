@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDemoApp", "WebAPIDemoApp\WebAPIDemoApp.csproj", "{26066F9F-4261-4627-80A4-ED7363ECDF4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIDemoApp", "WebAPIDemoApp\WebAPIDemoApp.csproj", "{26066F9F-4261-4627-80A4-ED7363ECDF4E}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "StockDB", "StockDB\StockDB.sqlproj", "{E731A0B2-676A-460C-9B3D-439BFB8ECB5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{59F8BD53-3B57-404A-AD11-1BE9398D3B1E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugHelper", "DebugHelper\DebugHelper.csproj", "{C1E089B1-9AE0-4E30-83B2-029A5F1339D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{59F8BD53-3B57-404A-AD11-1BE9398D3B1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{59F8BD53-3B57-404A-AD11-1BE9398D3B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59F8BD53-3B57-404A-AD11-1BE9398D3B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59F8BD53-3B57-404A-AD11-1BE9398D3B1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1E089B1-9AE0-4E30-83B2-029A5F1339D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1E089B1-9AE0-4E30-83B2-029A5F1339D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1E089B1-9AE0-4E30-83B2-029A5F1339D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1E089B1-9AE0-4E30-83B2-029A5F1339D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,7 +27,7 @@ public class SqlDataAccess : ISqlDataAccess
         await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
 
-    public async Task SaveDataBulk(string storedProcedure, IEnumerable<ProductModel> parameters, string connectionId = "Default")
+    public async Task SaveProductsBulk(string storedProcedure, IEnumerable<ProductModel> parameters, string connectionId = "Default")
     {
         using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
         var dataTable = new DataTable();
@@ -43,9 +43,7 @@ public class SqlDataAccess : ISqlDataAccess
         dataTable.Columns.Add("default_image", typeof(string));
 
         foreach (var parameter in parameters)
-        {
             dataTable.Rows.Add(parameter.ID, parameter.SKU, parameter.name, parameter.EAN, parameter.producer_name, parameter.category, parameter.is_wire, parameter.available, parameter.is_vendor, parameter.default_image);
-        }
 
         await connection.ExecuteAsync(storedProcedure, new { @ProductData = dataTable.AsTableValuedParameter("dbo.ProductModelType") }, commandType: CommandType.StoredProcedure);
     }
@@ -54,16 +52,46 @@ public class SqlDataAccess : ISqlDataAccess
     {
         using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
         var dataTable = new DataTable();
+        dataTable.Columns.Add("id", typeof(int)).AutoIncrement = true;
         dataTable.Columns.Add("product_id", typeof(int));
         dataTable.Columns.Add("unit", typeof(string));
         dataTable.Columns.Add("qty", typeof(decimal));
         dataTable.Columns.Add("shipping_cost", typeof(decimal));
 
         foreach (var parameter in parameters)
-        {
-            dataTable.Rows.Add(parameter.product_id, parameter.unit, parameter.qty, parameter.shipping_cost);
-        }
+            dataTable.Rows.Add(null, parameter.product_id, parameter.unit, parameter.qty, parameter.shipping_cost);
 
         await connection.ExecuteAsync(storedProcedure, new { @InventoryData = dataTable.AsTableValuedParameter("dbo.InventoryModelType") }, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task SavePricesBulk(string storedProcedure, IEnumerable<PriceModel> parameters, string connectionId = "Default")
+    {
+        using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+        var dataTable = new DataTable();
+        dataTable.Columns.Add("Id", typeof(int)).AutoIncrement = true;
+        dataTable.Columns.Add("SKU", typeof(string));
+        dataTable.Columns.Add("NetWithDiscountPerSet", typeof(decimal));
+
+        foreach (var parameter in parameters)
+            dataTable.Rows.Add(null, parameter.SKU, parameter.NetWithDiscountPerSet);
+
+        await connection.ExecuteAsync(storedProcedure, new { @PriceData = dataTable.AsTableValuedParameter("dbo.PriceModelType") }, commandType: CommandType.StoredProcedure);
+    }
+
+    public async Task SaveBulk<T>(string storedProcedure, IEnumerable<T> parameters, string tableTypeName, string connectionId = "Default")
+    {
+        using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+        var dataTable = new DataTable();
+
+        foreach (var property in typeof(T).GetProperties())
+            dataTable.Columns.Add(property.Name, property.PropertyType);
+
+        foreach (var parameter in parameters)
+        {
+            var values = typeof(T).GetProperties().Select(prop => prop.GetValue(parameter)).ToArray();
+            dataTable.Rows.Add(values);
+        }
+
+        await connection.ExecuteAsync(storedProcedure, new { @Data = dataTable.AsTableValuedParameter(tableTypeName) }, commandType: CommandType.StoredProcedure);
     }
 }
